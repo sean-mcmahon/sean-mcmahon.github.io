@@ -25,7 +25,7 @@ class RandomClassificationResults:
         predictions = []
         for actual in actuals:
             random_confidence = random.random()
-            if random_confidence >= probability:
+            if random_confidence < probability:
                 prediction = actual
             else:
                 prediction = random.choice(self.label_names)
