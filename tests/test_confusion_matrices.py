@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from code.confusion_matrices.random_classification_results import (
     RandomClassificationResults,
 )
-from code.confusion_matrices.confusion_matrix import ConfusionMatrix
+from code.confusion_matrices.confusion_matrix import ConfusionMatrixGenerator
 
 
 
@@ -19,7 +19,7 @@ def test_confusion_matrix_generate(labels):
     results_generator = RandomClassificationResults(20, labels)
     predictions, actuals = results_generator.generate()
 
-    confusion_matrix = ConfusionMatrix()
+    confusion_matrix = ConfusionMatrixGenerator()
     matrix_array = confusion_matrix.generate(predictions, actuals, labels)
 
     assert matrix_array.shape == (
@@ -37,7 +37,7 @@ def test_confusion_matrix_plot():
     results_generator = RandomClassificationResults(500, labels)
     predictions, actuals = results_generator.generate(probability=0.8)
 
-    confusion_matrix = ConfusionMatrix()
+    confusion_matrix = ConfusionMatrixGenerator()
     matrix_array = confusion_matrix.generate(predictions, actuals, labels)
 
     confusion_matrix.plot(matrix_array, labels)

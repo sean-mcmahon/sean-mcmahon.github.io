@@ -7,7 +7,7 @@ Predictions = List[Label]
 Actuals = List[Label]
 
 
-class RandomClassificationResults:
+class GenerateRandomClassificationResults:
     def __init__(
         self,
         number_samples: int,

@@ -6,11 +6,9 @@ from collections import Counter
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 from .random_classification_results import Label
 
-
-class ConfusionMatrix():
+class ConfusionMatrixGenerator():
     def __init__(self) -> None:
         self.results_per_actual:Counter[Tuple[Label, Label]] = Counter()
 
