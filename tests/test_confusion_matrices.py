@@ -2,10 +2,11 @@ import numpy as np
 import pytest
 import matplotlib.pyplot as plt
 
-from code.confusion_matrices.random_classification_results import (
-    RandomClassificationResults,
+from code.confusion_matrices.generate_random_classification_results import (
+    GenerateRandomClassificationResults,
 )
-from code.confusion_matrices.confusion_matrix import ConfusionMatrixGenerator
+from code.confusion_matrices.confusion_matrix_generator import ConfusionMatrixGenerator
+from code.confusion_matrices.metrics import Metrics
 
 
 
@@ -16,12 +17,13 @@ from code.confusion_matrices.confusion_matrix import ConfusionMatrixGenerator
     ]
 )
 def test_confusion_matrix_generate(labels):
-    results_generator = RandomClassificationResults(20, labels)
+    results_generator = GenerateRandomClassificationResults(20, labels)
     predictions, actuals = results_generator.generate()
 
-    confusion_matrix = ConfusionMatrixGenerator()
-    matrix_array = confusion_matrix.generate(predictions, actuals, labels)
+    confusion_matrix_generator = ConfusionMatrixGenerator()
+    cm = confusion_matrix_generator.generate(predictions, actuals, labels)
 
+    matrix_array = cm.matrix_array
     assert matrix_array.shape == (
         len(labels),
         len(labels),
@@ -32,13 +34,30 @@ def test_confusion_matrix_generate(labels):
 
 
 def test_confusion_matrix_plot():
-    # labels = ["Cancer", "Not Cancer"]
     labels = ["a", "b", "c", "d"]
-    results_generator = RandomClassificationResults(500, labels)
+    results_generator = GenerateRandomClassificationResults(500, labels)
     predictions, actuals = results_generator.generate(probability=0.8)
 
+    cm_generator = ConfusionMatrixGenerator()
+    cm = cm_generator.generate(predictions, actuals, labels)
+
+    cm_generator.plot(cm)
+    # plt.show()
+
+
+def test_confusion_matrix_metrics():
+    labels = ["a", "b"] #, "c", "d"]
+    # results_generator = GenerateRandomClassificationResults(500, labels)
+    # predictions, actuals = results_generator.generate()
+    predictions = ["a", "a", "b", "b"]
+    actuals = ["a", "a", "b", "b"]
     confusion_matrix = ConfusionMatrixGenerator()
     matrix_array = confusion_matrix.generate(predictions, actuals, labels)
 
-    confusion_matrix.plot(matrix_array, labels)
-    plt.show()
+    metrics = Metrics(matrix_array)
+    metrics.calculate()
+
+    assert all(metric == 1 for metric in metrics.recall.values())
+    assert all(metric == 1 for metric in metrics.precision.values())
+    assert all(metric == 1 for metric in metrics.f1_score.values())
+    assert all(metric == 1 for metric in metrics.iou.values())

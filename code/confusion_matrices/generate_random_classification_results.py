@@ -1,5 +1,6 @@
 from typing import List
 from typing import Optional
+from typing import Sequence
 import random
 
 Label = str
@@ -11,7 +12,7 @@ class GenerateRandomClassificationResults:
     def __init__(
         self,
         number_samples: int,
-        label_names: List[str],
+        label_names: Sequence[str],
         random_seed: Optional[int] = None,
     ):
         self.number_samples = number_samples
