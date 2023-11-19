@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Python pacakge for blog"
 authors = ["Sean McMahon <sean_mcmahon25@hotmail.com>"]
 readme = "README.md"
-packages = [{include = "code"}]
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

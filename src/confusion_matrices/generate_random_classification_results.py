@@ -13,7 +13,7 @@ class GenerateRandomClassificationResults:
         self,
         number_samples: int,
         label_names: Sequence[str],
-        random_seed: Optional[int] = None,
+        random_seed: Optional[float] = None,
     ):
         self.number_samples = number_samples
         self.label_names = label_names
