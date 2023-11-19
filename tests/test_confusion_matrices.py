@@ -2,11 +2,11 @@ import numpy as np
 import pytest
 import matplotlib.pyplot as plt
 
-from code.confusion_matrices.generate_random_classification_results import (
+from src.confusion_matrices.generate_random_classification_results import (
     GenerateRandomClassificationResults,
 )
-from code.confusion_matrices.confusion_matrix_generator import ConfusionMatrixGenerator
-from code.confusion_matrices.metrics import Metrics
+from src.confusion_matrices.confusion_matrix_generator import ConfusionMatrixGenerator
+from src.confusion_matrices.metrics import Metrics
 
 
 @pytest.mark.parametrize(
