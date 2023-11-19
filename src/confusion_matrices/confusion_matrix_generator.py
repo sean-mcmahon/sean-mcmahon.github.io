@@ -9,11 +9,14 @@ import matplotlib.pyplot as plt
 from .generate_random_classification_results import Label
 from .confusion_matrix import ConfusionMatrix
 
-class ConfusionMatrixGenerator():
-    def __init__(self) -> None:
-        self.results_per_actual:Counter[Tuple[Label, Label]] = Counter()
 
-    def generate(self, predictions: List[Label], actuals: List[Label], labels:List[Label]) -> ConfusionMatrix:
+class ConfusionMatrixGenerator:
+    def __init__(self) -> None:
+        self.results_per_actual: Counter[Tuple[Label, Label]] = Counter()
+
+    def generate(
+        self, predictions: List[Label], actuals: List[Label], labels: List[Label]
+    ) -> ConfusionMatrix:
         for actual, pred in zip(actuals, predictions):
             self.results_per_actual[actual, pred] += 1
 
@@ -25,14 +28,16 @@ class ConfusionMatrixGenerator():
         confusion_matrix = ConfusionMatrix(np.array(matrix), labels=tuple(labels))
         return confusion_matrix
 
-    def plot(self, confusion_matrix:ConfusionMatrix) -> [plt.Figure, plt.Axes]:
+    def plot(self, confusion_matrix: ConfusionMatrix) -> [plt.Figure, plt.Axes]:
         figure, axes = plt.subplots()
 
         cmap = "Oranges"
         ax_image = axes.imshow(confusion_matrix.matrix_array, interpolation="nearest", cmap=cmap)
-        min_colour = ax_image.cmap(0.)
-        max_colour = ax_image.cmap(1.)
-        mid_intensity = (confusion_matrix.matrix_array.max() + confusion_matrix.matrix_array.min()) / 2.
+        min_colour = ax_image.cmap(0.0)
+        max_colour = ax_image.cmap(1.0)
+        mid_intensity = (
+            confusion_matrix.matrix_array.max() + confusion_matrix.matrix_array.min()
+        ) / 2.0
         for column in range(len(confusion_matrix.labels)):
             for row in range(len(confusion_matrix.labels)):
                 cm_value = confusion_matrix.matrix_array[row, column]
@@ -46,6 +51,6 @@ class ConfusionMatrixGenerator():
             xticklabels=confusion_matrix.labels,
             yticklabels=confusion_matrix.labels,
             ylabel="Actuals",
-            xlabel="Predictions"
+            xlabel="Predictions",
         )
         return figure, axes

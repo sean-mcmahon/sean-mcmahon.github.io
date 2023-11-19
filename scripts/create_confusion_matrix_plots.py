@@ -2,6 +2,8 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import matplotlib.patheffects as pe
+
 
 ROOT_DIR = Path(__file__).parent.parent
 SRC_FOLDER = str(ROOT_DIR / "src")
@@ -30,6 +32,30 @@ def create_confusion_matrix_plot(
     return fig, axes
 
 
+def text_binary_classification_plot():
+    labels = ["Benign", "Malignant"]
+    cm_labels = [["TP", "FN"], ["FP", "TN"]]
+    fig, axes = create_confusion_matrix_plot(labels, predictor_probability=0.55, number_labels=200)
+    for text in axes.texts:
+        text.remove()
+    for column in range(len(labels)):
+        for row in range(len(labels)):
+            cm_value = cm_labels[row][column]
+            axes.text(
+                column,
+                row,
+                cm_value,
+                size="medium",
+                ha="center",
+                va="center",
+                color="black",
+                path_effects=[pe.withStroke(linewidth=2, foreground="white")],
+            )
+
+    axes.set_title("Binary Classification")
+    plt.savefig(ROOT_DIR / "assets/confusion_matrices" / "text_binary_classification_plot.png")
+
+
 def binary_classifaction_plot():
     labels = ["Benign", "Malignant"]
     fig, axes = create_confusion_matrix_plot(labels, number_labels=300)
@@ -46,5 +72,6 @@ def multiclass_classification_plot():
 
 
 if __name__ == "__main__":
+    text_binary_classification_plot()
     binary_classifaction_plot()
     multiclass_classification_plot()
