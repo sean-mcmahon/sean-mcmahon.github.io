@@ -25,7 +25,7 @@ class ConfusionMatrixGenerator():
         confusion_matrix = ConfusionMatrix(np.array(matrix), labels=tuple(labels))
         return confusion_matrix
 
-    def plot(self, confusion_matrix:ConfusionMatrix):
+    def plot(self, confusion_matrix:ConfusionMatrix) -> [plt.Figure, plt.Axes]:
         figure, axes = plt.subplots()
 
         cmap = "Oranges"
@@ -48,3 +48,4 @@ class ConfusionMatrixGenerator():
             ylabel="Actuals",
             xlabel="Predictions"
         )
+        return figure, axes
