@@ -65,7 +65,7 @@ def test_confusion_matrix_metrics_perfect_score():
 @pytest.mark.parametrize("predictor_probability", [0.1, 0.5, 0.9])
 def test_confusion_matrix_metrics_(predictor_probability):
     # predictor_probability = 0.7
-    labels = ["apple", "bannana", "carrot", "durian"]
+    labels = ["apple", "banana", "carrot", "durian"]
     results_generator = GenerateRandomClassificationResults(500, labels)
     predictions, actuals = results_generator.generate(probability=predictor_probability)
     confusion_matrix = ConfusionMatrixGenerator()

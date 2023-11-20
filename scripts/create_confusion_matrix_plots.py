@@ -33,8 +33,8 @@ def create_confusion_matrix_plot(
 
 
 def text_binary_classification_plot():
-    labels = ["Benign", "Malignant"]
-    cm_labels = [["TP", "FN"], ["FP", "TN"]]
+    labels = ["Cancer", "Not Cancer"]
+    cm_labels = [["True Positives (TP)", "False Negatives (FN)"], ["False Positives (FP)", "True Negatives (TN)"]]
     fig, axes = create_confusion_matrix_plot(labels, predictor_probability=0.55, number_labels=200)
     for text in axes.texts:
         text.remove()
@@ -56,8 +56,8 @@ def text_binary_classification_plot():
     plt.savefig(ROOT_DIR / "assets/confusion_matrices" / "text_binary_classification_plot.png")
 
 
-def binary_classifaction_plot():
-    labels = ["Benign", "Malignant"]
+def binary_classification_plot():
+    labels = ["Cancer", "Not Cancer"]
     fig, axes = create_confusion_matrix_plot(labels, number_labels=300)
     axes.set_title("Binary Classification")
     plt.savefig(ROOT_DIR / "assets/confusion_matrices" / "binary_classification_plot.png")
@@ -67,11 +67,11 @@ def multiclass_classification_plot():
     labels = ["Cat", "Dog", "Mouse", "Bird"]
     fig, axes = create_confusion_matrix_plot(labels, predictor_probability=0.65, number_labels=600)
 
-    axes.set_title("Multiclass Classification")
+    axes.set_title("Multi-Class Classification")
     plt.savefig(ROOT_DIR / "assets/confusion_matrices" / "multiclass_classification_plot.png")
 
 
 if __name__ == "__main__":
     text_binary_classification_plot()
-    binary_classifaction_plot()
+    binary_classification_plot()
     multiclass_classification_plot()
