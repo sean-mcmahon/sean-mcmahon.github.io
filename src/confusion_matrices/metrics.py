@@ -1,4 +1,3 @@
-from typing import List
 from typing import Dict
 
 from .confusion_matrix import ConfusionMatrix
@@ -19,10 +18,12 @@ class Metrics:
         self.__iou: Dict[str, float] = {}
 
     def calculate(self):
-        for class_index, class_name in enumerate(self.__confusion_matrix.labels):
-            true_positives = self.__confusion_matrix.matrix_array[class_index, class_index]
-            total_predictions_per_class = self.__confusion_matrix.matrix_array[:, class_index].sum()
-            total_actuals_per_class = self.__confusion_matrix.matrix_array[class_index, :].sum()
+        labels = self.__confusion_matrix.labels
+        confusion_matrix = self.__confusion_matrix.matrix_array
+        for class_index, class_name in enumerate(labels):
+            true_positives = confusion_matrix[class_index, class_index]
+            total_predictions_per_class = confusion_matrix[:, class_index].sum()
+            total_actuals_per_class = confusion_matrix[class_index, :].sum()
             false_positives = total_predictions_per_class - true_positives
             false_negatives = total_actuals_per_class - true_positives
 
@@ -34,6 +35,23 @@ class Metrics:
             self.__iou[class_name] = true_positives / (
                 true_positives + false_positives + false_negatives
             )
+
+    def __str__(self) -> str:
+        message = (
+            f"Labels: {self.__confusion_matrix.labels}\n"
+            f"Confusion matrix:\n{str(self.__confusion_matrix.matrix_array)}\n"
+            "Gives the following results.\n"
+        )
+        per_class = "{}:\nrecall = {:.2f}, precision = {:.2f}, f1_score = {:.2f}, iou = {:.2f}\n"
+        for class_name in self.__confusion_matrix.labels:
+            message += per_class.format(
+                class_name,
+                self.__recall[class_name],
+                self.__precision[class_name],
+                self.__f1_score[class_name],
+                self.__iou[class_name],
+            )
+        return message
 
     @property
     def recall(self) -> Dict[str, float]:

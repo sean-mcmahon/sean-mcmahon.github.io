@@ -2,7 +2,6 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import matplotlib.patheffects as pe
 
 
 ROOT_DIR = Path(__file__).parent.parent
@@ -14,6 +13,7 @@ from src.confusion_matrices.generate_random_classification_results import (
     GenerateRandomClassificationResults,
 )
 from src.confusion_matrices.confusion_matrix_generator import ConfusionMatrixGenerator
+from src.confusion_matrices.metrics import Metrics
 
 
 def create_confusion_matrix_plot(
@@ -34,13 +34,17 @@ def create_confusion_matrix_plot(
 
 def text_binary_classification_plot():
     labels = ["Cancer", "Not Cancer"]
-    cm_labels = [["True Positives (TP)", "False Negatives (FN)"], ["False Positives (FP)", "True Negatives (TN)"]]
+    cm_labels = [
+        ["True Positives (TP)", "False Negatives (FN)"],
+        ["False Positives (FP)", "True Negatives (TN)"],
+    ]
     fig, axes = create_confusion_matrix_plot(labels, predictor_probability=0.55, number_labels=200)
-    for text in axes.texts:
-        text.remove()
+    text_colours_at_position = {t_obj.get_position(): t_obj.get_color() for t_obj in axes.texts}
+    [text.remove() for text in axes.texts]  # pylint: disable=expression-not-assigned
     for column in range(len(labels)):
         for row in range(len(labels)):
             cm_value = cm_labels[row][column]
+            text_colour = text_colours_at_position[(column, row)]
             axes.text(
                 column,
                 row,
@@ -48,8 +52,7 @@ def text_binary_classification_plot():
                 size="medium",
                 ha="center",
                 va="center",
-                color="black",
-                path_effects=[pe.withStroke(linewidth=2, foreground="white")],
+                color=text_colour,
             )
 
     axes.set_title("Binary Classification")
@@ -65,10 +68,24 @@ def binary_classification_plot():
 
 def multiclass_classification_plot():
     labels = ["Cat", "Dog", "Mouse", "Bird"]
-    fig, axes = create_confusion_matrix_plot(labels, predictor_probability=0.65, number_labels=600)
+    predictor_probability = 0.65
+    number_labels = 600
+    results_generator = GenerateRandomClassificationResults(
+        number_labels, labels, random_seed=42.42
+    )
+    predictions, actuals = results_generator.generate(probability=predictor_probability)
+
+    cm_generator = ConfusionMatrixGenerator()
+    cm = cm_generator.generate(predictions, actuals, labels)
+
+    _, axes = cm_generator.plot(cm)
 
     axes.set_title("Multi-Class Classification")
     plt.savefig(ROOT_DIR / "assets/confusion_matrices" / "multiclass_classification_plot.png")
+
+    metrics = Metrics(cm)
+    metrics.calculate()
+    print(metrics)
 
 
 if __name__ == "__main__":

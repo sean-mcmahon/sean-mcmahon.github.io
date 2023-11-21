@@ -9,7 +9,7 @@ This blog will go in depth about confusion matrices, what they are, why we use t
 Confusion matrices are a common way for visualise your classifier's performance, whether that is a Transformer, CNN or SVM. Perhaps most importantly, they show how classifier fails in an easy to read manor.
 
 | ![Confusion Matrix](/assets/confusion_matrices/text_binary_classification_plot.png) 
- *The rows of a Confusion Matrix show the number of actual or ground truth labels, the columns show the predicted results, and in combination give the following; the True Positive (TP) rate, the False Negative (FN) rate, the False Positive (FP) rate and the True Negative (TN) rate.* | 
+ *The rows of a Confusion Matrix show the number of actual or ground truth labels, the columns show the predicted results, and in combination give the following four attributes; the True Positive (TP) rate, the False Negative (FN) rate, the False Positive (FP) rate and the True Negative (TN) rate.* | 
 
 ### Example of confusion matrix, binary classification
 
@@ -92,7 +92,7 @@ Recall the ratio of true positives, or correct, predictions, against the total n
 
 $$ recall = \frac{ TP }{ TP + FN } $$
 
-[Further explanation on recall](https://en.wikipedia.org/wiki/Precision_and_recall#Recall)
+[Further explanation on Recall](https://en.wikipedia.org/wiki/Precision_and_recall#Recall)
 
 #### Precision
 Precision shows the ratio of true positive, or correct, predictions, against the total number of model predictions for that class. By showing the ratio of correct predictions against all predictions for that class, precision gives an indication on how *precise* a classifier is at predicting a given class.
@@ -112,11 +112,16 @@ and:
 
 $$ F_1 = \frac{ 2 * TP }{ 2 * TP + FP + FN } $$
 
-This is identical to a lot of the definitions of the Dice coefficient, commonly used in segmentation and in the medical field, defined with the same equation [here](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) and [here](https://torchmetrics.readthedocs.io/en/stable/classification/dice.html).
+*Note* F1-Score is identical to a lot of the definitions of the Dice coefficient, commonly used in segmentation and in the medical field, defined with the same equation [here](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) and [here](https://torchmetrics.readthedocs.io/en/stable/classification/dice.html). So therefore;
 
-[Further explanation on F1-score](https://en.wikipedia.org/wiki/F-score)
+$$ F_1 \equiv Dice $$
 
-#### Side note: Intersection Over Union (IOU) or Jaccard score, and the Dice score.
+I've found this equivalence between the two to be the easiest way to gain an intuition as to what the Dice coefficient is telling me about a model's performance.
+
+[Further explanation on F1-score](https://en.wikipedia.org/wiki/F-score)\
+[Further explanation on the Dice coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient)
+
+#### Side note: Intersection Over Union (IOU) or Jaccard score.
 
 The IOU metric frequently come up for me as someone who has trained many semantic segmentation or pixel-wise classification models over the years. However, few explain this metric in terms of a confusion matrix, from that information, the Jaccard or IOU is defined as:
 
@@ -133,19 +138,43 @@ Further reading, these are particularly useful if you aren't already familiar wi
 
 
 
-#### Metrics calculation code:
+#### Putting it all together:
+
+From the above mutli-class classification confusion matrix we can compute the four metrics discussed above:
+
+{% highlight text %}
+
+Labels: ('Cat', 'Dog', 'Mouse', 'Bird')
+Confusion matrix:
+[[100  11  19  13]
+ [ 13 111  10   9]
+ [ 18  11 106  17]
+ [ 14  15  12 121]]
+Gives the following results
+Cat:
+recall = 0.70, precision = 0.69, f1_score = 0.69, iou = 0.53
+Dog:
+recall = 0.78, precision = 0.75, f1_score = 0.76, iou = 0.62
+Mouse:
+recall = 0.70, precision = 0.72, f1_score = 0.71, iou = 0.55
+Bird:
+recall = 0.75, precision = 0.76, f1_score = 0.75, iou = 0.60
+
+{% endhighlight text %}
 
 Below is a code snippet for calculating the aforementioned metrics, I opted for code that's easier to read rather than succinctness. 
 
 {% highlight python %}
-def calculate(self):
-    for class_index, class_name in enumerate(self.__confusion_matrix.labels):
-        true_positives = self.__confusion_matrix.matrix_array[class_index, class_index]
-        total_predictions_per_class = self.__confusion_matrix.matrix_array[:, class_index].sum()
-        total_actuals_per_class = self.__confusion_matrix.matrix_array[class_index, :].sum()
+# An excerpt from the Metrics class, used to generate the printout above.
+def calculate(self, labels:list[str], confusion_matrix: np.ndarray):
+    for class_index, class_name in enumerate(labels):
+        true_positives = confusion_matrix[class_index, class_index]
+        total_predictions_per_class = confusion_matrix[:, class_index].sum()
+        total_actuals_per_class = confusion_matrix[class_index, :].sum()
         false_positives = total_predictions_per_class - true_positives
         false_negatives = total_actuals_per_class - true_positives
 
+        # All are defined as Dict[str, float] outside of this code snippet
         self.__recall[class_name] = true_positives / total_actuals_per_class
         self.__precision[class_name] = true_positives / total_predictions_per_class
         self.__f1_score[class_name] = (
@@ -156,7 +185,7 @@ def calculate(self):
         )
 {% endhighlight python %}
 
-### Further reading 
+### Further reading on Confusion Matrices
 
  - [Wikipedia](https://en.wikipedia.org/wiki/Confusion_matrix)
  - [Sci-Kit Learn](https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html)
