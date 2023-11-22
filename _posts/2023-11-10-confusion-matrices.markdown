@@ -4,19 +4,34 @@ title:  "Confusion Matrices"
 categories: metrics measurements
 ---
 
+* TOC
+{:toc}
+
+## Introduction
+
 This blog will go in depth about confusion matrices, what they are, why we use them and some code examples on how to generate them. 
 
 Confusion matrices are a common way for visualise your classifier's performance, whether that is a Transformer, CNN or SVM. Perhaps most importantly, they show how classifier fails in an easy to read manor.
 
-| ![Confusion Matrix](/assets/confusion_matrices/text_binary_classification_plot.png) 
- *The rows of a Confusion Matrix show the number of actual or ground truth labels, the columns show the predicted results, and in combination give the following four attributes; the True Positive (TP) rate, the False Negative (FN) rate, the False Positive (FP) rate and the True Negative (TN) rate.* | 
+Below is an example binary classification confusion matrix, which displays the performance of a Cancer classification model. 
 
-### Example of confusion matrix, binary classification
+![Binary Classification Confusion Matrix](/assets/confusion_matrices/binary_classification_plot.png) 
 
 
-| ![Binary Classification Confusion Matrix](/assets/confusion_matrices/binary_classification_plot.png) |
+## Layout of a Confusion Matrix
 
-Confusion matrix creation from predictions and actuals.
+![Confusion Matrix](/assets/confusion_matrices/text_binary_classification_plot.png) 
+
+The rows of a Confusion Matrix show the number of actual or ground truth labels, the columns show the predicted results, and in combination give four attributes.
+ - The True Positive (TP) rate, shown on the top left, is the number of predictions correctly identified to be the class of interest, in this case "Cancer".
+ - The False Negative (FN) rate, seen to the right of the True Positive rate, shows the number of incorrect model predictions assigned to another label/class when they are actually the class of interest, in this case "Cancer". 
+ - The False Positive (FP) rate shows the number of predictions incorrectly identified as the class/label of interest.
+ - The True Negative (TN) rate, is the number of predictions correctly identified to be the negative class, in this case "Not Cancer".
+
+
+### Python Code to Create and Plot
+
+The following codes creates a confusion matrix, given a list of model predictions, a list of the actuals, or ground truth labels and a list of the label names.
 {% highlight python %}
 from collections import Counter
 
@@ -39,7 +54,9 @@ def generate_confusion_matrix(
 
 {% endhighlight python %}
 
-Generate a confusion matrix plot
+
+The following code generates the confusion matrix plots seen in this blog, given a confusion matrix and a list of label names to display. 
+
 {% highlight python %}
 import numpy as np
 import matplotlib.pyplot as plt
@@ -75,33 +92,33 @@ def plot(
     return figure, axes
 {% endhighlight %}
 
-### Multi-class confusion matrix
+## Multi-Class Confusion Matrix
 
 This code scales for multi-class classification, the more common use case.
 
-| ![Multiclass Classification Confusion Matrix](/assets/confusion_matrices/multiclass_classification_plot.png) |
+![Multiclass Classification Confusion Matrix](/assets/confusion_matrices/multiclass_classification_plot.png)
 
 
-### Metrics calculated from Confusion Matrices
+# Performance Metrics Calculated from Confusion Matrices
 
 Even if you don't want to plot a confusion matrix, the information contained within them are often used to calculate common classification results, such as; Precision, Recall and F1-Score
 
 
-#### Recall
+## Recall
 Recall the ratio of true positives, or correct, predictions, against the total number of actuals, or ground truths, for that class. It gives an idea of how many of the total number of classes you classifier correctly detected in the dataset. Defined as:
 
 $$ recall = \frac{ TP }{ TP + FN } $$
 
 [Further explanation on Recall](https://en.wikipedia.org/wiki/Precision_and_recall#Recall)
 
-#### Precision
+## Precision
 Precision shows the ratio of true positive, or correct, predictions, against the total number of model predictions for that class. By showing the ratio of correct predictions against all predictions for that class, precision gives an indication on how *precise* a classifier is at predicting a given class.
 
 $$ precision = \frac{ TP }{ TP + FP } $$
 
 [Further explanation on Precision](https://en.wikipedia.org/wiki/Precision_and_recall#Precision)
 
-#### F1-Score
+## F1-Score
 F1-score is the harmonic mean between precision and recall, I think of it as a metric summarising both precision and recall, this is a good metric to look at first when evaluating a model. 
 
 Two commonly used equations for the f1-score are:
@@ -121,7 +138,7 @@ I've found this equivalence between the two to be the easiest way to gain an int
 [Further explanation on F1-score](https://en.wikipedia.org/wiki/F-score)\
 [Further explanation on the Dice coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient)
 
-#### Side note: Intersection Over Union (IOU) or Jaccard score.
+## Intersection Over Union (IOU) / Jaccard score.
 
 The IOU metric frequently come up for me as someone who has trained many semantic segmentation or pixel-wise classification models over the years. However, few explain this metric in terms of a confusion matrix, from that information, the Jaccard or IOU is defined as:
 
@@ -138,7 +155,7 @@ Further reading, these are particularly useful if you aren't already familiar wi
 
 
 
-#### Putting it all together:
+## Metrics Calculated from Multi-Class Classification Example and Code:
 
 From the above mutli-class classification confusion matrix we can compute the four metrics discussed above:
 
@@ -185,7 +202,7 @@ def calculate(self, labels:list[str], confusion_matrix: np.ndarray):
         )
 {% endhighlight python %}
 
-### Further reading on Confusion Matrices
+# Further reading on Confusion Matrices
 
  - [Wikipedia](https://en.wikipedia.org/wiki/Confusion_matrix)
  - [Sci-Kit Learn](https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html)
