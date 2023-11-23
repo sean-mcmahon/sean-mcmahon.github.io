@@ -32,6 +32,9 @@ The rows of a Confusion Matrix show the number of actual or ground truth labels,
 ### Python Code to Create and Plot
 
 The following codes creates a confusion matrix, given a list of model predictions, a list of the actuals, or ground truth labels and a list of the label names.
+
+The two code snippets below are slightly modified excerpts from the confusion matrix generate class from this blog's github repository, [found here]({{ site.baseurl }}{% link /src/confusion_matrices/confusion_matrix_generator.py %}).
+
 {% highlight python %}
 from collections import Counter
 
@@ -40,17 +43,18 @@ import numpy as np
 Label = str
 
 def generate_confusion_matrix(
-    predictions: list[Label], actuals: list[Label], labels: list[Label]
-) -> np.ndarray:
+    predictions: list[Label], actuals: list[Label]
+) -> np.ndarray, list[label]:
     results_per_actual: Counter[tuple[Label, Label]] = Counter()
     for actual, pred in zip(actuals, predictions):
         results_per_actual[actual, pred] += 1
     confusion_matrix = []
+    labels = sorted(set(actuals))
     for label_cls in labels:
         matrix_row = [results_per_actual[label_cls, pred_cls] for pred_cls in labels]
         confusion_matrix.append(matrix_row)
 
-    return np.array(confusion_matrix)
+    return np.array(confusion_matrix), labels
 
 {% endhighlight python %}
 
@@ -161,25 +165,26 @@ From the above mutli-class classification confusion matrix we can compute the fo
 
 {% highlight text %}
 
-Labels: ('Cat', 'Dog', 'Mouse', 'Bird')
+Labels: ('Bird', 'Cat', 'Dog', 'Mouse')
 Confusion matrix:
-[[100  11  19  13]
- [ 13 111  10   9]
- [ 18  11 106  17]
- [ 14  15  12 121]]
-Gives the following results
+[[121  14  15  12]
+ [ 13 100  11  19]
+ [  9  13 111  10]
+ [ 17  18  11 106]]
+Gives the following results.
+Bird:
+recall = 0.75, precision = 0.76, f1_score = 0.75, iou = 0.60
 Cat:
 recall = 0.70, precision = 0.69, f1_score = 0.69, iou = 0.53
 Dog:
 recall = 0.78, precision = 0.75, f1_score = 0.76, iou = 0.62
 Mouse:
 recall = 0.70, precision = 0.72, f1_score = 0.71, iou = 0.55
-Bird:
-recall = 0.75, precision = 0.76, f1_score = 0.75, iou = 0.60
 
 {% endhighlight text %}
 
-Below is a code snippet for calculating the aforementioned metrics, I opted for code that's easier to read rather than succinctness. 
+Below is a code snippet for calculating the aforementioned metrics, I opted for code that's easier to read rather than succinctness. The full class this code snippet is copied from can be found at this blog post's github repository, [via this link]({{ site.baseurl }}{% link /src/confusion_matrices/metrics.py %}).
+
 
 {% highlight python %}
 # An excerpt from the Metrics class, used to generate the printout above.

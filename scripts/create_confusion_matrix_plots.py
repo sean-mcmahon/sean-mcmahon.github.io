@@ -25,7 +25,7 @@ def create_confusion_matrix_plot(
     predictions, actuals = results_generator.generate(probability=predictor_probability)
 
     cm_generator = ConfusionMatrixGenerator()
-    cm = cm_generator.generate(predictions, actuals, labels)
+    cm = cm_generator.generate(predictions, actuals)
 
     fig, axes = cm_generator.plot(cm)
 
@@ -76,7 +76,7 @@ def multiclass_classification_plot():
     predictions, actuals = results_generator.generate(probability=predictor_probability)
 
     cm_generator = ConfusionMatrixGenerator()
-    cm = cm_generator.generate(predictions, actuals, labels)
+    cm = cm_generator.generate(predictions, actuals)
 
     _, axes = cm_generator.plot(cm)
 

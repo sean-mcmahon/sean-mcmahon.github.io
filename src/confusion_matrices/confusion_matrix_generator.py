@@ -12,13 +12,12 @@ class ConfusionMatrixGenerator:
     def __init__(self) -> None:
         self.results_per_actual: Counter[tuple[Label, Label]] = Counter()
 
-    def generate(
-        self, predictions: list[Label], actuals: list[Label], labels: list[Label]
-    ) -> ConfusionMatrix:
+    def generate(self, predictions: list[Label], actuals: list[Label]) -> ConfusionMatrix:
         for actual, pred in zip(actuals, predictions):
             self.results_per_actual[actual, pred] += 1
 
         matrix = []
+        labels = sorted(set(actuals))
         for label_cls in labels:
             matrix_row = [self.results_per_actual[label_cls, pred_cls] for pred_cls in labels]
             matrix.append(matrix_row)

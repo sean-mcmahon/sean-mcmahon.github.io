@@ -21,7 +21,7 @@ def test_confusion_matrix_generate(labels):
     predictions, actuals = results_generator.generate()
 
     confusion_matrix_generator = ConfusionMatrixGenerator()
-    cm = confusion_matrix_generator.generate(predictions, actuals, labels)
+    cm = confusion_matrix_generator.generate(predictions, actuals)
 
     matrix_array = cm.matrix_array
     assert matrix_array.shape == (
@@ -39,7 +39,7 @@ def test_confusion_matrix_plot():
     predictions, actuals = results_generator.generate(probability=0.8)
 
     cm_generator = ConfusionMatrixGenerator()
-    cm = cm_generator.generate(predictions, actuals, labels)
+    cm = cm_generator.generate(predictions, actuals)
 
     cm_generator.plot(cm)
     # plt.show()
@@ -51,7 +51,7 @@ def test_confusion_matrix_metrics_perfect_score():
     predictions = ["a", "a", "b", "b"]
     actuals = ["a", "a", "b", "b"]
     confusion_matrix = ConfusionMatrixGenerator()
-    matrix_array = confusion_matrix.generate(predictions, actuals, labels)
+    matrix_array = confusion_matrix.generate(predictions, actuals)
 
     metrics = Metrics(matrix_array)
     metrics.calculate()
@@ -69,7 +69,7 @@ def test_confusion_matrix_metrics_(predictor_probability):
     results_generator = GenerateRandomClassificationResults(500, labels)
     predictions, actuals = results_generator.generate(probability=predictor_probability)
     confusion_matrix = ConfusionMatrixGenerator()
-    matrix_array = confusion_matrix.generate(predictions, actuals, labels)
+    matrix_array = confusion_matrix.generate(predictions, actuals)
 
     metrics = Metrics(matrix_array)
     metrics.calculate()
@@ -82,6 +82,14 @@ def test_confusion_matrix_metrics_(predictor_probability):
     assert np.allclose(
         list(metrics.iou.values()), [f1_ / (2 - f1_) for f1_ in metrics.f1_score.values()]
     )
-    assert all(metric >= (predictor_probability - 0.05) for metric in metrics.recall.values())
-    assert all(metric >= (predictor_probability - 0.05) for metric in metrics.precision.values())
-    assert all(metric >= (predictor_probability - 0.05) for metric in metrics.f1_score.values())
+    random_tolerance = 0.02
+    assert all(
+        metric >= (predictor_probability - random_tolerance) for metric in metrics.recall.values()
+    )
+    assert all(
+        metric >= (predictor_probability - random_tolerance)
+        for metric in metrics.precision.values()
+    )
+    assert all(
+        metric >= (predictor_probability - random_tolerance) for metric in metrics.f1_score.values()
+    )
