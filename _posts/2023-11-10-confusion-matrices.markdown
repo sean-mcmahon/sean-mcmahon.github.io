@@ -4,14 +4,13 @@ title:  "Confusion Matrices"
 categories: metrics measurements
 ---
 
+This blog will briefly cover confusion matrices, what they are, and how we generate them with code examples. 
+
 * TOC
 {:toc}
 
 ## Introduction
-
-This blog will go in depth about confusion matrices, what they are, why we use them and some code examples on how to generate them. 
-
-Confusion matrices are a common way for visualise your classifier's performance, whether that is a Transformer, CNN or SVM. Perhaps most importantly, they show how classifier fails in an easy to read manor.
+Confusion matrices are a vital way to visualise your machine learning model's performance for classification tasks, regardless of which type of model you use, and whether that task is detecting pedestrians in a self-driving car, or predicting your customers' next purchase on your website. Most notably, a confusion matrix efficiently highlights how a classifier fails, not just how it succeeds, facilitating a simple method to make informed decisions for model improvement.
 
 Below is an example binary classification confusion matrix, which displays the performance of a Cancer classification model. 
 
@@ -22,7 +21,7 @@ Below is an example binary classification confusion matrix, which displays the p
 
 ![Confusion Matrix](/assets/confusion_matrices/text_binary_classification_plot.png) 
 
-The rows of a Confusion Matrix show the number of actual or ground truth labels, the columns show the predicted results, and in combination give four attributes.
+The rows of a Confusion Matrix show the number of actual or ground truth labels, the columns show the predicted results, and in combination give the following four attributes.
  - The True Positive (TP) rate, shown on the top left, is the number of predictions correctly identified to be the class of interest, in this case "Cancer".
  - The False Negative (FN) rate, seen to the right of the True Positive rate, shows the number of incorrect model predictions assigned to another label/class when they are actually the class of interest, in this case "Cancer". 
  - The False Positive (FP) rate shows the number of predictions incorrectly identified as the class/label of interest.
@@ -31,9 +30,9 @@ The rows of a Confusion Matrix show the number of actual or ground truth labels,
 
 ### Python Code to Create and Plot
 
-The following codes creates a confusion matrix, given a list of model predictions, a list of the actuals, or ground truth labels and a list of the label names.
+The following codes creates a confusion matrix given a list of model predictions and a list of the actuals.
 
-The two code snippets below are slightly modified excerpts from the confusion matrix generate class from this blog's github repository, [found here]({{ site.baseurl }}{% link /src/confusion_matrices/confusion_matrix_generator.py %}).
+The two code snippets below are slightly modified excerpts from the class `ConfusionMatrixGenerator` from this blog's github repository, [found here]({{ site.baseurl }}{% link /src/confusion_matrices/confusion_matrix_generator.py %}).
 
 {% highlight python %}
 from collections import Counter
@@ -183,7 +182,7 @@ recall = 0.70, precision = 0.72, f1_score = 0.71, iou = 0.55
 
 {% endhighlight text %}
 
-Below is a code snippet for calculating the aforementioned metrics, I opted for code that's easier to read rather than succinctness. The full class this code snippet is copied from can be found at this blog post's github repository, [via this link]({{ site.baseurl }}{% link /src/confusion_matrices/metrics.py %}).
+Below is a code snippet for calculating the aforementioned metrics, I opted for code that's easier to read rather than succinctness. The code  is from the class `Metrics` which can be found in this blog post's GitHub repository [via this link]({{ site.baseurl }}{% link /src/confusion_matrices/metrics.py %}).
 
 
 {% highlight python %}
@@ -206,6 +205,12 @@ def calculate(self, labels:list[str], confusion_matrix: np.ndarray):
             true_positives + false_positives + false_negatives
         )
 {% endhighlight python %}
+
+# Summary
+
+This blog has briefly touched on the very useful evaluation tool for classification problems in Machine Learning, confusion matrices. In addition to providing examples for binary and multi-class classification, some code was provided to give further insights on how to generate and plot these matrices. 
+
+Finally, we covered the essential performance metrics used in most classification problems, such as precision, recall, F1-score, and IOU, and again further clarity was added with a code example. The simplicity of calculating these metrics showcases how confusion matrices serve as the cornerstone for assessing the performance of machine learning models across many applications.
 
 # Further reading on Confusion Matrices
 
