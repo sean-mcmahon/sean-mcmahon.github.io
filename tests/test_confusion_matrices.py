@@ -66,7 +66,7 @@ def test_confusion_matrix_metrics_perfect_score():
 def test_confusion_matrix_metrics_(predictor_probability):
     # predictor_probability = 0.7
     labels = ["apple", "banana", "carrot", "durian"]
-    results_generator = GenerateRandomClassificationResults(500, labels)
+    results_generator = GenerateRandomClassificationResults(500, labels, random_seed=3.141)
     predictions, actuals = results_generator.generate(probability=predictor_probability)
     confusion_matrix = ConfusionMatrixGenerator()
     matrix_array = confusion_matrix.generate(predictions, actuals)

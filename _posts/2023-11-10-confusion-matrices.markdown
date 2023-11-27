@@ -12,7 +12,7 @@ This blog will briefly cover confusion matrices, what they are, and how we gener
 ## Introduction
 Confusion matrices are a vital way to visualise your machine learning model's performance for classification tasks, regardless of which type of model you use, and whether that task is detecting pedestrians in a self-driving car, or predicting your customers' next purchase on your website. Most notably, a confusion matrix efficiently highlights how a classifier fails, not just how it succeeds, facilitating a simple method to make informed decisions for model improvement.
 
-Below is an example binary classification confusion matrix, which displays the performance of a Cancer classification model. 
+Below is an example binary classification confusion matrix, which displays the performance of a cancer detecting classification model. 
 
 ![Binary Classification Confusion Matrix](/assets/confusion_matrices/binary_classification_plot.png) 
 
@@ -30,10 +30,11 @@ The rows of a Confusion Matrix show the number of actual or ground truth labels,
 
 ### Python Code to Create and Plot
 
-The following codes creates a confusion matrix given a list of model predictions and a list of the actuals.
+The following codes creates a confusion matrix given a list of model predictions and actuals (ground truths labels).
 
-The two code snippets below are slightly modified excerpts from the class `ConfusionMatrixGenerator` from this blog's github repository, [found here]({{ site.baseurl }}{% link /src/confusion_matrices/confusion_matrix_generator.py %}).
+The two code snippets below are slightly modified excerpts from the class `ConfusionMatrixGenerator` from this blog's github repository [found here]({{ site.baseurl }}{% link /src/confusion_matrices/confusion_matrix_generator.py %}).
 
+#### Example Code for Creating a Confusion Matrix
 {% highlight python %}
 from collections import Counter
 
@@ -60,6 +61,7 @@ def generate_confusion_matrix(
 
 The following code generates the confusion matrix plots seen in this blog, given a confusion matrix and a list of label names to display. 
 
+#### Example Code for Visualising a Confusion Matrix
 {% highlight python %}
 import numpy as np
 import matplotlib.pyplot as plt
@@ -97,25 +99,25 @@ def plot(
 
 ## Multi-Class Confusion Matrix
 
-This code scales for multi-class classification, the more common use case.
+This code scales for multi-class classification, the more common use case can be seen below.
 
 ![Multiclass Classification Confusion Matrix](/assets/confusion_matrices/multiclass_classification_plot.png)
 
 
 # Performance Metrics Calculated from Confusion Matrices
 
-Even if you don't want to plot a confusion matrix, the information contained within them are often used to calculate common classification results, such as; Precision, Recall and F1-Score
+Even if you don't want to plot a confusion matrix, the information contained within them are often used to calculate common classification results, such as; Precision, Recall and F1-Score.
 
 
 ## Recall
-Recall the ratio of true positives, or correct, predictions, against the total number of actuals, or ground truths, for that class. It gives an idea of how many of the total number of classes you classifier correctly detected in the dataset. Defined as:
+Recall the ratio of true positives, or correct predictions, against the total number of actuals, for that class. It gives an idea on how many of the total number of classes you classifier correctly detected in the dataset, defined as:
 
 $$ recall = \frac{ TP }{ TP + FN } $$
 
 [Further explanation on Recall](https://en.wikipedia.org/wiki/Precision_and_recall#Recall)
 
 ## Precision
-Precision shows the ratio of true positive, or correct, predictions, against the total number of model predictions for that class. By showing the ratio of correct predictions against all predictions for that class, precision gives an indication on how *precise* a classifier is at predicting a given class.
+Precision shows the ratio of true positive, or correct predictions, against the total number of model predictions for that class. By showing the ratio of correct predictions against all predictions for that class, precision gives an indication on how *precise* a classifier is at predicting a given class.
 
 $$ precision = \frac{ TP }{ TP + FP } $$
 
@@ -143,7 +145,7 @@ I've found this equivalence between the two to be the easiest way to gain an int
 
 ## Intersection Over Union (IOU) / Jaccard score.
 
-The IOU metric frequently come up for me as someone who has trained many semantic segmentation or pixel-wise classification models over the years. However, few explain this metric in terms of a confusion matrix, from that information, the Jaccard or IOU is defined as:
+The IOU metric frequently come up for me as someone who has trained many models for semantic segmentation over the years. However, few explain this metric in terms of a confusion matrix, from that information, the Jaccard or IOU is defined as:
 
 $$ IOU = \frac{ TP }{ TP + FP + FN } $$ 
 
@@ -151,14 +153,14 @@ and also can be defined from the Dice coefficient or F1 score.
 
 $$ IOU = \frac{ Dice }{ 2 - Dice } $$ 
 
-Further reading, these are particularly useful if you aren't already familiar with IOU:
+Further reading, which os particularly useful if you aren't already familiar with IOU:
  - [Py Image Search](https://pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/)
  - [Learn Data Sci](https://www.learndatasci.com/glossary/jaccard-similarity/#:~:text=Jaccard%20Similarity%20is%20a%20common,the%20similarity%20between%20two%20sets.)
  - [Wikipedia](https://en.wikipedia.org/wiki/Jaccard_index)
 
 
 
-## Metrics Calculated from Multi-Class Classification Example and Code:
+## Calculated Metrics for the Multi-Class Classification Example
 
 From the above mutli-class classification confusion matrix we can compute the four metrics discussed above:
 
@@ -208,9 +210,9 @@ def calculate(self, labels:list[str], confusion_matrix: np.ndarray):
 
 # Summary
 
-This blog has briefly touched on the very useful evaluation tool for classification problems in Machine Learning, confusion matrices. In addition to providing examples for binary and multi-class classification, some code was provided to give further insights on how to generate and plot these matrices. 
+This blog has briefly touched on confusion matrices, a very useful evaluation tool for classification problems in Machine Learning. In addition to providing examples for binary and multi-class classification, some code was provided to give further insights on how to generate and plot these matrices. 
 
-Finally, we covered the essential performance metrics used in most classification problems, such as precision, recall, F1-score, and IOU, and again further clarity was added with a code example. The simplicity of calculating these metrics showcases how confusion matrices serve as the cornerstone for assessing the performance of machine learning models across many applications.
+Finally, we covered the essential performance metrics used in most classification problems, such as precision, recall, F1-score, and IOU, and again further clarity was added with code examples. The simplicity of calculating these metrics showcases how confusion matrices serve as the cornerstone for assessing the performance of machine learning models across many applications.
 
 # Further reading on Confusion Matrices
 
