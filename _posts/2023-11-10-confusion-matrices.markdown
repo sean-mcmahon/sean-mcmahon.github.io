@@ -14,7 +14,7 @@ Confusion matrices are a vital way to visualise your machine learning model's pe
 
 Below is an example binary classification confusion matrix, which displays the performance of a cancer detecting classification model. 
 
-![Binary Classification Confusion Matrix](/assets/confusion_matrices/binary_classification_plot.png) 
+![Binary Classification Confusion Matrix](assets/confusion_matrices/binary_classification_plot.png) 
 
 
 ## Layout of a Confusion Matrix
