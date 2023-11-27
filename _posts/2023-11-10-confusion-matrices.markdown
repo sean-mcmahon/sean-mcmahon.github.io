@@ -14,12 +14,12 @@ Confusion matrices are a vital way to visualise your machine learning model's pe
 
 Below is an example binary classification confusion matrix, which displays the performance of a cancer detecting classification model. 
 
-![Binary Classification Confusion Matrix](assets/confusion_matrices/binary_classification_plot.png) 
+![Binary Classification Confusion Matrix]({{ site.baseurl }}/assets/confusion_matrices/binary_classification_plot.png) 
 
 
 ## Layout of a Confusion Matrix
 
-![Confusion Matrix](/assets/confusion_matrices/text_binary_classification_plot.png) 
+![Confusion Matrix]({{ site.baseurl }}/assets/confusion_matrices/text_binary_classification_plot.png)
 
 The rows of a Confusion Matrix show the number of actual or ground truth labels, the columns show the predicted results, and in combination give the following four attributes.
  - The True Positive (TP) rate, shown on the top left, is the number of predictions correctly identified to be the class of interest, in this case "Cancer".
@@ -101,7 +101,7 @@ def plot(
 
 This code scales for multi-class classification, the more common use case can be seen below.
 
-![Multiclass Classification Confusion Matrix](/assets/confusion_matrices/multiclass_classification_plot.png)
+![Multiclass Classification Confusion Matrix]({{ site.baseurl }}/assets/confusion_matrices/multiclass_classification_plot.png)
 
 
 # Performance Metrics Calculated from Confusion Matrices
