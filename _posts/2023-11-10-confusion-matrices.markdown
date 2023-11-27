@@ -32,7 +32,7 @@ The rows of a Confusion Matrix show the number of actual or ground truth labels,
 
 The following codes creates a confusion matrix given a list of model predictions and actuals (ground truths labels).
 
-The two code snippets below are slightly modified excerpts from the class `ConfusionMatrixGenerator` from this blog's github repository [found here]({{ site.baseurl }}{% link /src/confusion_matrices/confusion_matrix_generator.py %}).
+The two code snippets below are slightly modified excerpts from the class `ConfusionMatrixGenerator` from this blog's github repository [found here](https://github.com/sean-mcmahon/sean-mcmahon.github.io/blob/main/src/confusion_matrices/confusion_matrix_generator.py).
 
 #### Example Code for Creating a Confusion Matrix
 {% highlight python %}
@@ -184,7 +184,7 @@ recall = 0.70, precision = 0.72, f1_score = 0.71, iou = 0.55
 
 {% endhighlight text %}
 
-Below is a code snippet for calculating the aforementioned metrics, I opted for code that's easier to read rather than succinctness. The code  is from the class `Metrics` which can be found in this blog post's GitHub repository [via this link]({{ site.baseurl }}{% link /src/confusion_matrices/metrics.py %}).
+Below is a code snippet for calculating the aforementioned metrics, I opted for code that's easier to read rather than succinctness. The code  is from the class `Metrics` which can be found in this blog post's GitHub repository [via this link](https://github.com/sean-mcmahon/sean-mcmahon.github.io/blob/main/src/confusion_matrices/metrics.py).
 
 
 {% highlight python %}
