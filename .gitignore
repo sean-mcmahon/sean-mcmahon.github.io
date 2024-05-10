@@ -5,3 +5,7 @@ _site
 vendor
 
 *.pyc
+
+
+.ipynb_checkpoints
+

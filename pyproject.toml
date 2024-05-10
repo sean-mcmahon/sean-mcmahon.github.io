@@ -11,6 +11,9 @@ python = "^3.11"
 numpy = "^1.26.2"
 matplotlib = "^3.8.1"
 pytest = "^7.4.3"
+jupyterlab = "^4.1.8"
+scikit-learn = "^1.4.2"
+pandas = "^2.2.2"
 
 [build-system]
 requires = ["poetry-core"]
