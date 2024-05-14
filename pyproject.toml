@@ -14,6 +14,8 @@ pytest = "^7.4.3"
 jupyterlab = "^4.1.8"
 scikit-learn = "^1.4.2"
 pandas = "^2.2.2"
+kaggle = "^1.6.12"
+fastai = "^2.7.15"
 
 [build-system]
 requires = ["poetry-core"]
